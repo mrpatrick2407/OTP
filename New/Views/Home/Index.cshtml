@@ -1,0 +1,60 @@
+﻿<h2>Login with Firebase Auth</h2>
+<div>
+    <label for="email">Email:</label>
+    <input type="email" id="email" />
+    <button onclick="sendOTP()">Send OTP</button>
+</div>
+<div id="otp-container" >
+    <label for="otp">OTP:</label>
+    <input type="text" id="otp" />
+    <button onclick="login()">Login</button>
+</div>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAa7FwLWJqtUI_GFsGuJHFyhCqy0FHkjBI",
+        authDomain: "theo-bf408.firebaseapp.com",
+        projectId: "theo-bf408",
+        storageBucket: "theo-bf408.appspot.com",
+        messagingSenderId: "612036327662",
+        appId: "1:612036327662:web:3637c500999b8609eb9bff",
+        measurementId: "G-PSJ2JLXVMH"
+    };
+
+    // Initialize Firebase
+    
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Function to send OTP
+    function sendOTP() {
+        var email = document.getElementById("email").value;
+        firebase.auth().sendSignInLinkToEmail(email, {
+            url: window.location.href,
+            handleCodeInApp: true
+        })
+            .then(function () {
+                document.getElementById("otp-container").style.display = "block"
+                alert('sent')
+            })
+            .catch(function (error) {
+                alert('error');
+                console.log(error);
+            });
+    }
+
+    // Function to login with OTP
+    function login() {
+        var email = document.getElementById("email").value;
+        var otp = document.getElementById("otp").value;
+        firebase.auth().signInWithEmailLink(email, window.location.href)
+            .then(function (result) {
+                // User is signed in.
+                alert("You have logged in.");
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+</script>
